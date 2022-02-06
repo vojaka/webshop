@@ -1,4 +1,4 @@
-package ee.kim.webshop;
+package ee.kim.webshop.controller;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;

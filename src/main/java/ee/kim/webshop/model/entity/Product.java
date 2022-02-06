@@ -1,4 +1,4 @@
-package ee.kim.webshop;
+package ee.kim.webshop.model.entity;
 
 import lombok.*;
 

@@ -1,11 +1,15 @@
-package ee.kim.webshop;
+package ee.kim.webshop.controller;
 
+import ee.kim.webshop.repository.ProductRepository;
+import ee.kim.webshop.model.entity.Product;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Log4j2
 public class ProductController {
 
     @Autowired
@@ -13,13 +17,15 @@ public class ProductController {
 
     @GetMapping("products")
     public List<Product> getProducts(){
+        log.info("v6eti k6ik tooted");
+        log.debug("v6eti k6ik tooted");
+        log.error("v6eti k6ik tooted");
         return productRepository.findAll();
     }
-
     @PostMapping("products")
     public String addProduct(@RequestBody Product product){
         productRepository.save(product);
-        return "New product added" + product.getName();
+        return "New product added> " + product.getName();
     }
 
     @DeleteMapping("products/{id}")
@@ -31,7 +37,7 @@ public class ProductController {
     @DeleteMapping("products")
     public String deleteAllProducts(){
         productRepository.flush();
-        return "All products deleted product number";
+        return "All products deleted";
     }
 
     @PutMapping("product/{id}")
