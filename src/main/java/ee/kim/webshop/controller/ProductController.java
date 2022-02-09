@@ -1,5 +1,6 @@
 package ee.kim.webshop.controller;
 
+import ee.kim.webshop.repository.OrderRepository;
 import ee.kim.webshop.repository.ProductRepository;
 import ee.kim.webshop.model.entity.Product;
 import lombok.extern.log4j.Log4j2;
@@ -10,10 +11,14 @@ import java.util.List;
 
 @RestController
 @Log4j2
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
 
     @GetMapping("products")
     public List<Product> getProducts(){
