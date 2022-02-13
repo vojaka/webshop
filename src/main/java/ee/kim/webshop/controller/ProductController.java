@@ -34,9 +34,9 @@ public class ProductController {
     }
 
     @DeleteMapping("products/{id}")
-    public String deleteProduct(@PathVariable Long id){
+    public List<Product> deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
-        return "Deleted product number" + id;
+        return productRepository.findAll();
     }
 
     @DeleteMapping("products")
@@ -49,5 +49,11 @@ public class ProductController {
     public String editProduct(@PathVariable Long id, @RequestBody Product product){
         productRepository.save(product);
         return "Product successfully edited:" + id;
+    }
+
+    @PutMapping("products")
+    public String saveAllProducts( @RequestBody List<Product> product){
+        productRepository.saveAll(product);
+        return "Product successfully saved";
     }
 }

@@ -2,8 +2,6 @@ package ee.kim.webshop.model.request.output;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class EveryPayData {
     private String api_username;

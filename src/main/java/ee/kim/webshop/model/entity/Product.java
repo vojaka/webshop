@@ -19,5 +19,9 @@ public class Product {
     private String name;
     private double price;
     private int quantity;
-    private String store;
+    private String imgSrc;
+    private boolean isActive;
+    private String category; // homework
+    private String description;
+    private long barcode;
 }
