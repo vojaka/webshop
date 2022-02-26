@@ -2,11 +2,13 @@ package ee.kim.webshop.service;
 
 import ee.kim.webshop.model.entity.Order;
 import ee.kim.webshop.model.entity.Product;
+import ee.kim.webshop.model.request.input.CartProduct;
 import ee.kim.webshop.model.request.input.EveryPayResponse;
 import ee.kim.webshop.model.request.output.EveryPayData;
 import ee.kim.webshop.model.request.output.EveryPayLink;
 import ee.kim.webshop.repository.OrderRepository;
 import ee.kim.webshop.repository.ProductRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Log4j2
 @Service
 public class PaymentService {
     @Value("${everypay.username}")
@@ -50,9 +52,10 @@ public class PaymentService {
     @Autowired
     OrderRepository orderRepository;
 
-    public List<Product> getProductsFromDb(List<Product> products){
+    public List<Product> getProductsFromDb(List<CartProduct> products){
+        log.info(products.get(0).getCartProduct().getId());
         return products.stream()
-                .map(e -> productRepository.findById(e.getId()).get())
+                .map(e -> productRepository.findById(e.getCartProduct().getId()).get())
                 .collect(Collectors.toList());
     }
     public double getOrderSum(List<Product> products){

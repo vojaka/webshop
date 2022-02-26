@@ -1,6 +1,7 @@
 package ee.kim.webshop.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,39 +10,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class OmnivaLocation {
+public class OmnivaLocation{
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
-        private String zip;
-        private String name;
-        private String type;
-        private String a0Name;
-        private String a1Name;
-        private String a2Name;
-        private String a3Name;
-        private String a4Name;
-        private String a5Name;
-        private String a6Name;
-        private String a7Name;
-        private String a8Name;
-        private String xCoordinate;
-        private String yCoordinate;
-        private String serviceHours;
-        private String tempServiceHours;
-        private String tempServiceHoursUntil;
-        private String tempServiceHours2;
-        private String tempServiceHours2_Until;
-        private String commentEst;
-        private String commentEng;
-        private String commentRus;
-        private String commentLav;
-        private String commentLit;
-        private String modified;
+        public String zIP;
+        public String nAME;
+        public String tYPE;
+        public String a0_NAME;
+        public String a1_NAME;
+        public String a2_NAME;
+        public String a3_NAME;
+        public String a4_NAME;
+        public String a5_NAME;
+        public String a6_NAME;
+        public String a7_NAME;
+        public String a8_NAME;
+        public String x_COORDINATE;
+        public String y_COORDINATE;
+        public String sERVICE_HOURS;
+        public String tEMP_SERVICE_HOURS;
+        public String tEMP_SERVICE_HOURS_UNTIL;
+        public String tEMP_SERVICE_HOURS_2;
+        public String tEMP_SERVICE_HOURS_2_UNTIL;
+        public String comment_est;
+        public String comment_eng;
+        public String comment_rus;
+        public String comment_lav;
+        public String comment_lit;
+        public Date mODIFIED;
     }

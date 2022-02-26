@@ -37,3 +37,4 @@ class PaymentMethod {
     private String paymentLink;
     private String logoUrl;
 }
+

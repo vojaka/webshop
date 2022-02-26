@@ -5,6 +5,8 @@ import ee.kim.webshop.repository.ProductRepository;
 import ee.kim.webshop.model.entity.Product;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +24,15 @@ public class ProductController {
 
     @GetMapping("products")
     public List<Product> getProducts(){
-        log.info("v6eti k6ik tooted");
-        log.debug("v6eti k6ik tooted");
-        log.error("v6eti k6ik tooted");
-        return productRepository.findAll();
+        return productRepository.findByOrderByIdAsc();
     }
+
+    @GetMapping("products/{id}")
+    public Product viewProduct(@PathVariable Long id){
+        Product product = productRepository.findById(id).get();
+        return product;
+    }
+
     @PostMapping("products")
     public String addProduct(@RequestBody Product product){
         productRepository.save(product);
@@ -55,5 +61,39 @@ public class ProductController {
     public String saveAllProducts( @RequestBody List<Product> product){
         productRepository.saveAll(product);
         return "Product successfully saved";
+    }
+
+    @PatchMapping("increase-quantity")
+    public ResponseEntity<String> increaseProductQuantity(@RequestBody Product product) {
+        if (productRepository.findById(product.getId()).isPresent()) {
+            int productQuantity = product.getQuantity();
+            product.setQuantity(++productQuantity);
+            productRepository.save(product);
+            return ResponseEntity.ok()
+                    .body("Edukalt toote kogus suurendatud");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Toodet mille kogust taheti muuta ei leitud");
+        }
+    }
+
+    @PatchMapping("decrease-quantity")
+    public ResponseEntity<String> decreaseProductQuantity(@RequestBody Product product) {
+        if (productRepository.findById(product.getId()).isPresent() &&
+                product.getQuantity() > 0) {
+            int productQuantity = product.getQuantity();
+            product.setQuantity(--productQuantity);
+            productRepository.save(product);
+            return ResponseEntity.ok()
+                    .body("Edukalt toote kogus vähendatud");
+
+        } else if (product.getQuantity() < 1) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Tootel mille kogust taheti vähendada on kogus liiga väike");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Toodet mille kogust taheti muuta ei leitud");
+        }
+
     }
 }

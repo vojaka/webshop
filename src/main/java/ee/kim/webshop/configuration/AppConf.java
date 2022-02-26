@@ -11,5 +11,4 @@ public class AppConf {
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder){
         return restTemplateBuilder.build();
     }
-
 }

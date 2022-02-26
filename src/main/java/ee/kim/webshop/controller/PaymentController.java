@@ -1,10 +1,12 @@
 package ee.kim.webshop.controller;
 
 import ee.kim.webshop.model.entity.Product;
+import ee.kim.webshop.model.request.input.CartProduct;
 import ee.kim.webshop.model.request.output.EveryPayLink;
 import ee.kim.webshop.repository.OrderRepository;
 import ee.kim.webshop.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +27,13 @@ public class PaymentController {
     PaymentService paymentService;
 
     @PostMapping("payment")
-    public EveryPayLink getPaymentLink(@RequestBody List<Product> products) {
+    public ResponseEntity<EveryPayLink> getPaymentLink(@RequestBody List<CartProduct> products) {
 
         List<Product> productsFromDb = paymentService.getProductsFromDb(products);
         double orderSum = paymentService.getOrderSum(productsFromDb);
-        Long orderID = paymentService.saveOrderToDb(orderSum,productsFromDb);
-        return paymentService.getPaymentLinkFromEveryPay(orderSum, orderID);
+        Long orderId = paymentService.saveOrderToDb(orderSum,productsFromDb);
+        return ResponseEntity.ok()
+                .body(paymentService.getPaymentLinkFromEveryPay(orderSum,orderId));
     }
     //bean
     //config file
