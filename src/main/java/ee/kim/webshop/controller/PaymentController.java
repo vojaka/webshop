@@ -3,6 +3,7 @@ package ee.kim.webshop.controller;
 import ee.kim.webshop.model.entity.Product;
 import ee.kim.webshop.model.request.input.CartProduct;
 import ee.kim.webshop.model.request.output.EveryPayLink;
+import ee.kim.webshop.model.request.output.EveryPayPaymentCheck;
 import ee.kim.webshop.repository.OrderRepository;
 import ee.kim.webshop.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,12 @@ public class PaymentController {
         return ResponseEntity.ok()
                 .body(paymentService.getPaymentLinkFromEveryPay(orderSum,orderId));
     }
-    //bean
-    //config file
-    //api
-    //saatmise p6hi
-    // tegema body header ja need siduma
-    // p'ringu tegema netti
-    //response
-    //
+
+    @PostMapping("check-payment")
+    public ResponseEntity<Boolean> checkPayment(@RequestBody EveryPayPaymentCheck everyPayPaymentCheck) {
+        Boolean isPaid = paymentService.checkIfOrderPaid(everyPayPaymentCheck);
+
+        return ResponseEntity.ok()
+                .body(true);
+    }
 }

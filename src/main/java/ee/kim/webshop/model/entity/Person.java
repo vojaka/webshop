@@ -22,6 +22,7 @@ public class Person {
      private String email;
      private String phone;
      private String personCode;
+
     // Repository
     // Controller, kus saab lisada, muuta, kustutada, kõiki võtta
 }

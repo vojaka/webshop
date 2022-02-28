@@ -22,7 +22,6 @@ public class Product {
     @NotBlank
     private String name;
 
-    @Column(nullable = true)
     private double price;
 
     @NotNull
@@ -34,8 +33,8 @@ public class Product {
     @NotNull
     private boolean active;
 
-    @NotBlank
-    private String category;
+    @OneToOne
+    private Category category;
 
     @NotBlank // mitte "null", mitte "", mitte " "
     private String description;

@@ -3,9 +3,12 @@ package ee.kim.webshop.service;
 import ee.kim.webshop.model.entity.Order;
 import ee.kim.webshop.model.entity.Product;
 import ee.kim.webshop.model.request.input.CartProduct;
+import ee.kim.webshop.model.request.input.EveryPayCheckResponse;
 import ee.kim.webshop.model.request.input.EveryPayResponse;
+import ee.kim.webshop.model.request.input.PaymentState;
 import ee.kim.webshop.model.request.output.EveryPayData;
 import ee.kim.webshop.model.request.output.EveryPayLink;
+import ee.kim.webshop.model.request.output.EveryPayPaymentCheck;
 import ee.kim.webshop.repository.OrderRepository;
 import ee.kim.webshop.repository.ProductRepository;
 import lombok.extern.log4j.Log4j2;
@@ -69,13 +72,14 @@ public class PaymentService {
         order.setTimeStamp(new Date());
         order.setSum(orderSum);
         order.setOrderProducts(products);
+        order.setPaid(false);
 
         Order updateOrder = orderRepository.save(order);
         return updateOrder.getId();
     }
 
     public EveryPayLink getPaymentLinkFromEveryPay(double orderSum, Long orderID){
-        Instant now = Instant.now();
+       Instant now = Instant.now();
         ZonedDateTime timeStamp = ZonedDateTime.ofInstant(now, ZoneId.systemDefault());
 
         EveryPayData everyPayData = new EveryPayData();
@@ -102,4 +106,24 @@ public class PaymentService {
         return link;
     }
 
+    public Boolean checkIfOrderPaid(EveryPayPaymentCheck everyPayPaymentCheck) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", authorization);
+        HttpEntity<EveryPayData> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<EveryPayCheckResponse> response =
+                restTemplate.exchange(
+                        everyPayUrl + everyPayPaymentCheck.getPayment_reference() + "?api_username=" + everyPayUsername,
+                        HttpMethod.GET,httpEntity, EveryPayCheckResponse.class);
+        if (response.getBody() != null) {
+            PaymentState paymentState = response.getBody().getPayment_state();
+            if (paymentState == PaymentState.failed ||
+                    paymentState == PaymentState.abandoned ||
+                    paymentState == PaymentState.voided) {
+                return false;
+            } else if (paymentState == PaymentState.settled) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

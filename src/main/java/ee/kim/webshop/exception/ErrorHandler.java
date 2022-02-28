@@ -33,14 +33,14 @@ public class ErrorHandler {
         return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler()
-    public ResponseEntity <ErrorResponse> handleException(DataIntegrityViolationException e){
-        ErrorResponse response = new ErrorResponse();
-        response.setMessage("Ribakood peab olema unikaalne");
-        response.setTimeStamp(new Date());
-        response.setHttpStatus(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler()
+//    public ResponseEntity <ErrorResponse> handleException(DataIntegrityViolationException e){
+//        ErrorResponse response = new ErrorResponse();
+//        response.setMessage("Ribakood peab olema unikaalne");
+//        response.setTimeStamp(new Date());
+//        response.setHttpStatus(HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<ErrorResponse>(response, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler()
     public ResponseEntity <ErrorResponse> handleException(ConstraintViolationException e){
